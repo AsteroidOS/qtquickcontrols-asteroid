@@ -21,7 +21,7 @@ import org.asteroid.controls 1.0
 
 /*!
     \qmltype IconButton
-    \inqmlmodule org.controls.asteroid 1.0
+    \inqmlmodule org.asteroid.controls 1.0
 
     \brief Provides a virtual button with settable icon.
 

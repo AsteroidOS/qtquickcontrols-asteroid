@@ -45,7 +45,7 @@ FocusScope {
 
     signal enterKeyClicked
 
-    Keys.onReleased: {
+    Keys.onReleased: (event) => {
         if (event.key === Qt.Key_Return)
             enterKeyClicked()
     }

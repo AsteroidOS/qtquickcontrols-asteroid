@@ -47,7 +47,7 @@ if [ ! -f "${SRC_DIR}/i18n/${APPLICATION_NAME}.desktop.h" ]; then
     exit 2
 fi
 
-DEFAULT_NAME=$(grep -oP '//% "\K[^"]+(?=")' "${SRC_DIR}/i18n/${APPLICATION_NAME}.desktop.h")
+DEFAULT_NAME=$(sed -n 's/\/\/% //p' "${SRC_DIR}/i18n/${APPLICATION_NAME}.desktop.h" | cut -d'"' -f2)
 if [ -z "$DEFAULT_NAME" ]; then
   echo "Default name can not be found in ${SRC_DIR}/i18n/${APPLICATION_NAME}.desktop.h"
   exit 3
@@ -59,7 +59,7 @@ echo "Name=$DEFAULT_NAME" >> "$OUTPUT_FILE"
 for FILE in "${SRC_DIR}"/i18n/*.ts; do
   echo "Processing $FILE..."
 
-  PROCESSED_LANG=$(grep -oP 'language="\K[^"]+(?=")' "$FILE")
+  PROCESSED_LANG=$(xmllint --xpath 'string(//TS/@language)' "$FILE")
   if [ -z "$PROCESSED_LANG" ]; then
     echo "> Couldn't find a corresponding language id, aborting"
     continue
@@ -78,7 +78,7 @@ for FILE in "${SRC_DIR}"/i18n/*.ts; do
     continue
   fi
 
-  TRANSLATED_NAME=$(echo "$TRANSLATION_LINE" | grep -oP '>\K[^<]*(?=</translation>)')
+  TRANSLATED_NAME=$(echo "$TRANSLATION_LINE" | xmllint --xpath 'string(//translation)' -) # TODO: 2>/dev/null ?
   if [ -z "$TRANSLATED_NAME" ]; then
     echo "> Translation is empty, aborting"
     continue

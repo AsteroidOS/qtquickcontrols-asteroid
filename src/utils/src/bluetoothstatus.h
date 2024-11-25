@@ -23,6 +23,7 @@
 #include <QDBusObjectPath>
 #include <QDBusConnection>
 #include <QDBusServiceWatcher>
+#include <QtQml>
 
 typedef QMap<QString, QMap<QString, QVariant>> InterfaceList;
 Q_DECLARE_METATYPE(InterfaceList)
@@ -30,6 +31,7 @@ Q_DECLARE_METATYPE(InterfaceList)
 class BluetoothStatus : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(bool powered READ getPowered WRITE setPowered NOTIFY poweredChanged)
     Q_PROPERTY(bool connected READ getConnected NOTIFY connectedChanged)
 

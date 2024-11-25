@@ -26,6 +26,8 @@
 class DeviceInfo : public QObject
 {
     Q_OBJECT
+    QML_SINGLETON
+    QML_ELEMENT
     Q_DISABLE_COPY(DeviceInfo)
     Q_PROPERTY(bool hasRoundScreen READ hasRoundScreen CONSTANT)
     Q_PROPERTY(double borderGestureWidth READ borderGestureWidth CONSTANT)
@@ -38,11 +40,8 @@ class DeviceInfo : public QObject
     Q_PROPERTY(QString buildID READ buildID CONSTANT)
     DeviceInfo();
 public:
-    static QObject *qmlInstance(QQmlEngine *engine, QJSEngine *scriptEngine)
+    static DeviceInfo *create(QQmlEngine *, QJSEngine *)
     {
-        Q_UNUSED(engine);
-        Q_UNUSED(scriptEngine);
-
         return new DeviceInfo;
     }
     bool hasRoundScreen();

@@ -25,16 +25,16 @@
 class FileInfo : public QObject
 {
     Q_OBJECT
+    QML_SINGLETON
+    QML_ELEMENT
     Q_DISABLE_COPY(FileInfo)
     FileInfo() {}
 public:
-    static QObject *qmlInstance(QQmlEngine *engine, QJSEngine *scriptEngine)
+    static FileInfo *create(QQmlEngine *, QJSEngine *)
     {
-        Q_UNUSED(engine);
-        Q_UNUSED(scriptEngine);
-
         return new FileInfo;
     }
+    // TODO: FileInfo(QObject *parent = 0); instead?
     Q_INVOKABLE bool exists(const QString fileName);
 };
 

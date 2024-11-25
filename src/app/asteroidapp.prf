@@ -34,7 +34,7 @@ QT += quick qml
 
 target.path = /usr/bin
 
-desktop.commands = bash $$_PRO_FILE_PWD_/i18n/generate-desktop.sh $$_PRO_FILE_PWD_ $${TARGET}.desktop
+desktop.commands = sh $$_PRO_FILE_PWD_/i18n/generate-desktop.sh $$_PRO_FILE_PWD_ $${TARGET}.desktop
 desktop.files = $$OUT_PWD/$${TARGET}.desktop
 desktop.path = /usr/share/applications
 desktop.CONFIG = no_check_exist

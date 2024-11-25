@@ -4,11 +4,11 @@ function(BUILD_TRANSLATIONS directory)
 		return()
 	endif()
 
-	find_package(Qt5LinguistTools REQUIRED)
+	find_package(Qt6LinguistTools REQUIRED)
 
 	file(GLOB LANGUAGE_FILES_TS ${directory}/*.ts)
 	#set_source_files_properties(${LANGUAGE_FILES_TS} PROPERTIES OUTPUT_LOCATION "i18n")
-	qt5_add_translation(LANGUAGE_FILES_QM ${LANGUAGE_FILES_TS} OPTIONS "-idbased")
+	qt_add_translation(LANGUAGE_FILES_QM ${LANGUAGE_FILES_TS} OPTIONS "-idbased")
 	add_custom_target(build-translations ALL
 		COMMENT "Building translations in ${director}..."
 		DEPENDS ${LANGUAGE_FILES_QM})

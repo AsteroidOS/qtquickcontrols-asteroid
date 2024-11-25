@@ -1,22 +1,33 @@
 set(SRC
-	src/utils_plugin.cpp
 	src/deviceinfo.cpp
 	src/fileinfo.cpp
 	src/bluetoothstatus.cpp)
 set(HEADERS
-	src/utils_plugin.h
 	src/deviceinfo.h
 	src/fileinfo.h
 	src/bluetoothstatus.h)
 
-add_library(asteroidutilsplugin ${SRC} ${HEADERS})
+# TODO: ensure FileInfo 1.0 (singleton) & BluetoothStatus 1.0 (normal) QML classes work
+qt_add_qml_module(asteroidutilsplugin
+	URI org.asteroid.utils
+	VERSION 1.0
+	PLUGIN_TARGET asteroidutilsplugin
+	#NO_PLUGIN_OPTIONAL
+	SOURCES
+		${SRC} ${HEADERS}
+)
+
+target_include_directories(asteroidutilsplugin PRIVATE src)
 
 target_link_libraries(asteroidutilsplugin
-	Qt5::DBus
-	Qt5::Qml
-	Qt5::Quick)
+	#PUBLIC
+	#	Qt::Qml
+	#	Qt::Quick
+	PRIVATE
+		Qt::DBus # bluetoothstatus
+)
 
 install(TARGETS asteroidutilsplugin
 	DESTINATION ${INSTALL_QML_IMPORT_DIR}/org/asteroid/utils)
-install(FILES qmldir
-	DESTINATION ${INSTALL_QML_IMPORT_DIR}/org/asteroid/utils)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/qmldir
+    DESTINATION ${INSTALL_QML_IMPORT_DIR}/org/asteroid/utils)

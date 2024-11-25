@@ -33,7 +33,8 @@
 #include <QFileInfo>
 #include <MDesktopEntry>
 #include <QTranslator>
-#include <mdeclarativecache5/MDeclarativeCache>
+#if WITH_MAPPLAUNCHERD
+#include <mdeclarativecache/MDeclarativeCache>
 
 static QString applicationPath()
 {
@@ -47,11 +48,16 @@ static QString applicationPath()
         return QCoreApplication::applicationFilePath();
     }
 }
+#endif
 
 namespace AsteroidApp {
     QString appName()
     {
+#if WITH_MAPPLAUNCHERD
         QFileInfo exe = QFileInfo(applicationPath());
+#else
+        QFileInfo exe = QFileInfo(QCoreApplication::applicationFilePath());
+#endif
         return exe.baseName();
     }
 
@@ -60,14 +66,20 @@ namespace AsteroidApp {
         static QGuiApplication *app = NULL;
 
         if (app == NULL) {
+#if WITH_MAPPLAUNCHERD
             app = MDeclarativeCache::qApplication(argc, argv);
+#else
+            app = new QGuiApplication(argc, argv);
+#endif
 
             app->setOrganizationName(appName());
             app->setOrganizationDomain(appName());
             app->setApplicationName(appName());
 
             QTranslator *translator = new QTranslator();
-            translator->load(QLocale(), appName(), ".", "/usr/share/translations", ".qm");
+            if (!translator->load(QLocale(), appName(), ".", "/usr/share/translations", ".qm")) {
+                qDebug() << "Failed to load" << QLocale().name() << "translations for" << appName();
+            }
             app->installTranslator(translator);
         } else {
             qWarning("AsteroidApp::application() called multiple times");
@@ -78,7 +90,11 @@ namespace AsteroidApp {
 
     QQuickView *createView()
     {
+#if WITH_MAPPLAUNCHERD
         QQuickView *view = MDeclarativeCache::qQuickView();
+#else
+        QQuickView *view = new QQuickView;
+#endif
         MDesktopEntry entry("/usr/share/applications/" + appName() + ".desktop");
         if (entry.isValid()) {
             view->setTitle(entry.name());
@@ -94,7 +110,7 @@ namespace AsteroidApp {
     {
         QScopedPointer<QGuiApplication> app(AsteroidApp::application(argc, argv));
         QScopedPointer<QQuickView> view(AsteroidApp::createView());
-        view->setSource(QUrl("qrc:/main.qml"));
+        view->setSource(QUrl("qrc:/qt/qml/asteroidapp/main.qml"));
         view->resize(app->primaryScreen()->size());
         view->show();
         return app->exec();

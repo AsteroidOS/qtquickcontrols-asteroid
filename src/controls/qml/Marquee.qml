@@ -33,7 +33,7 @@ import org.asteroid.controls 1.0
 
     \qml
     import QtQuick 2.0
-    import org.controls.asteroid 1.0
+    import org.asteroid.controls 1.0
 
     Item {
         Marquee {

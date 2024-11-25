@@ -20,7 +20,7 @@ import org.asteroid.controls 1.0
 
 /*!
    \qmltype Label
-   \inqmlmodule org.controls.asteroid 1.0
+   \inqmlmodule org.asteroid.controls 1.0
 
    \brief Provides a way to get a text label sized for AsteroidOS.
 

@@ -41,7 +41,7 @@ pragma Singleton
 
     \qml
     import QtQuick 2.0
-    import org.controls.asteroid 1.0
+    import org.asteroid.controls 1.0
 
     Rectangle {
         width: Dims.w(80) // 80 % of screen width
@@ -61,7 +61,7 @@ QtObject {
         \qmlmethod real w(real number)
         \brief Returns a dimension that is \a number percent of the screen width.
     */
-    function w(number) {
+    function w(number: real): real {
         return (number/100)*Screen.desktopAvailableWidth
     }
 
@@ -69,7 +69,7 @@ QtObject {
         \qmlmethod real h(real number)
         \brief Returns a dimension that is \a number percent of the screen height.
     */
-    function h(number) {
+    function h(number: real): real {
         return (number/100)*(Screen.desktopAvailableHeight+DeviceInfo.flatTireHeight)
     }
 
@@ -77,7 +77,7 @@ QtObject {
         \qmlmethod real l(real number)
         \brief Returns a dimension that is \a number percent of the screen width or height; whichever is smaller.
     */
-    function l(number) {
+    function l(number: real): real {
         if(Screen.desktopAvailableWidth > (Screen.desktopAvailableHeight+DeviceInfo.flatTireHeight))
             return h(number)
         else

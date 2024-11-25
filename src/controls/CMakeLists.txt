@@ -11,9 +11,7 @@ set(HEADERS
 	src/flatmeshnode.h
 	src/icon.h)
 
-add_library(asteroidcontrolsplugin ${SRC} ${HEADERS} resources.qrc)
-
-set(controls 
+set(controls
         Application
         BorderGestureArea
         CircularSpinner
@@ -40,6 +38,44 @@ set(controls
         TextBase
         TextField
 )
+foreach(control ${controls})
+    list(APPEND controls-qml "qml/${control}.qml")
+endforeach()
+
+set_source_files_properties(qml/Dims.qml
+	PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+
+qt_add_qml_module(asteroidcontrolsplugin
+	URI org.asteroid.controls
+	VERSION 1.0
+	PLUGIN_TARGET asteroidcontrolsplugin
+	NO_GENERATE_PLUGIN_SOURCE
+	#NO_PLUGIN_OPTIONAL
+	QML_FILES
+		${controls-qml}
+	#ENABLE_TYPE_COMPILER
+	SOURCES
+		${SRC} ${HEADERS}
+)
+
+# TODO: drop debug once AOT produces less warnings etc
+set_target_properties(asteroidcontrolsplugin PROPERTIES QT_QMLCACHEGEN_ARGUMENTS "--verbose")
+
+qt6_add_shaders(asteroidcontrolsplugin "asteroidcontrolsplugin_shaders"
+    PREFIX "/org/asteroid/controls/"
+    FILES "qml/Spinner.frag"
+    BATCHABLE
+    PRECOMPILE
+    OPTIMIZED)
+
+target_link_libraries(asteroidcontrolsplugin
+	PUBLIC
+		#Qt::Qml
+		Qt::Quick # src/{application_p,flatmesh{,node},icon}.*
+	PRIVATE
+		Qt::Svg # src/icon.cpp
+)
+
 set(controls-docs "$<LIST:TRANSFORM,$<LIST:TRANSFORM,$<LOWER_CASE:${controls}>,PREPEND,qml->,APPEND,.html>")
 set(doc-dir "${CMAKE_BINARY_DIR}/doc/html")
 set(full-controls-docs "$<LIST:TRANSFORM,${controls-docs},PREPEND,${doc-dir}>")
@@ -55,12 +91,7 @@ add_custom_command(
     COMMENT "Generating HTML format Reference documentation..." VERBATIM
 )
 
-target_link_libraries(asteroidcontrolsplugin
-	Qt5::Qml
-	Qt5::Quick
-	Qt5::Svg)
-
 install(TARGETS asteroidcontrolsplugin
 	DESTINATION ${INSTALL_QML_IMPORT_DIR}/org/asteroid/controls)
-install(FILES qmldir
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/qmldir
 	DESTINATION ${INSTALL_QML_IMPORT_DIR}/org/asteroid/controls)

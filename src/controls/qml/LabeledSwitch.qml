@@ -23,7 +23,7 @@ import org.asteroid.controls 1.0
 
 /*!
     \qmltype LabeledSwitch
-    \inqmlmodule org.controls.asteroid 1.0
+    \inqmlmodule org.asteroid.controls 1.0
 
     \brief This combines \l Label and \l Switch in a convenient package.
 

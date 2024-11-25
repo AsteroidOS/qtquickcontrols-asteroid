@@ -34,5 +34,6 @@ if (NOT ASTEROID_SKIP_BUILD_SETTINGS)
 	set(INSTALL_QML_IMPORT_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/qml" 
 		CACHE PATH "Custom QML import installation directory")
 
-	set(QT_MIN_VERSION "5.12.0")
+	# Ensure availability of QTP0001 (https://doc.qt.io/qt-6/qt-cmake-policy-qtp0001.html)
+	set(QT_MIN_VERSION "6.5.0")
 endif()

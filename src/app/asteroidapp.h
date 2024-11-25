@@ -43,7 +43,7 @@ namespace AsteroidApp {
     ASTEROIDAPP_EXPORT QGuiApplication *application(int &argc, char **argv);
     ASTEROIDAPP_EXPORT QQuickView *createView();
 
-    // Very simple interface: Uses "qrc:/main.qml" as QML entry point
+    // Very simple interface: Uses "qrc:/qt/qml/asteroidapp/main.qml" as QML entry point
     ASTEROIDAPP_EXPORT int main(int &argc, char **argv);
 };
 

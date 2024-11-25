@@ -21,7 +21,7 @@ import org.asteroid.controls 1.0
 
 /*!
     \qmltype Switch
-    \inqmlmodule org.controls.asteroid 1.0
+    \inqmlmodule org.asteroid.controls 1.0
 
     \brief Specializes \l IconButton to provide an on/off toggle.
 

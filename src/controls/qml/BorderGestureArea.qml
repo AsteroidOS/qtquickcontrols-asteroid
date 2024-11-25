@@ -61,7 +61,7 @@ import org.asteroid.utils 1.0
             acceptsRight: true
             acceptsLeft: true
             acceptsDown: true
-            onGestureFinished: {
+            onGestureFinished: (gesture) => {
                 if (gesture == "right") {
                     square.color = "red"
                 }
@@ -95,7 +95,7 @@ import org.asteroid.utils 1.0
         anchors.fill: parent
         acceptsUp: true
         acceptsDown: true
-        onGestureFinished: {
+        onGestureFinished: (gesture) => {
             if (gesture == "up") {
                 square.color = "green"
             }
@@ -157,7 +157,7 @@ MouseArea {
     property int _mouseStart
     property variant _gestures: ["down", "left", "up", "right"]
 
-    onPressed: {
+    onPressed: (mouse) => {
         if (mouse.x < boundary && acceptsRight) {
             gesture = "right"
             max = width - mouse.x
@@ -184,7 +184,7 @@ MouseArea {
         gestureStarted(gesture)
     }
 
-    onPositionChanged: {
+    onPositionChanged: (mouse) => {
         var p = horizontal ? mouse.x : mouse.y
         value = Math.max(Math.min(p - _mouseStart, max), -max)
     }
